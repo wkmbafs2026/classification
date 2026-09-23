@@ -1,1 +1,928 @@
-# classification
+
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地獄級會計六大要素考驗 | Hellish Accounting 6 Elements Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #f0ebf8 0%, #e6deed 50%, #f7f3fb 100%);
+            min-height: 100vh;
+            color: #1a0826;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        /* Kahoot Button Animations & Vibrant Color Palette */
+        .btn-kahoot-red { background-color: #e21b3c; }
+        .btn-kahoot-red:hover { background-color: #c01431; }
+        
+        .btn-kahoot-blue { background-color: #1368ce; }
+        .btn-kahoot-blue:hover { background-color: #0f52a5; }
+        
+        .btn-kahoot-yellow { background-color: #d89e00; }
+        .btn-kahoot-yellow:hover { background-color: #b08100; }
+        
+        .btn-kahoot-green { background-color: #26890c; }
+        .btn-kahoot-green:hover { background-color: #1e6e09; }
+
+        .kahoot-card {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+        }
+        .kahoot-card:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+        }
+
+        /* Light Fire / Hell Glow Effects */
+        .hell-glow {
+            text-shadow: 0 0 10px rgba(226, 27, 60, 0.3), 0 0 20px rgba(255, 102, 0, 0.2);
+        }
+
+        /* Pulse animations */
+        @keyframes pulse-fast {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse-fast {
+            animation: pulse-fast 0.6s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Custom Light Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0ebf8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9333ea;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between p-3 md:p-6">
+
+    <!-- Sound Effect Audio Synthesizer (Web Audio API) -->
+    <script>
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+            }
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playBeep(freq = 440, type = 'sine', duration = 0.1) {
+                if (!this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e){}
+            }
+            correct() {
+                if (!this.ctx) return;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    setTimeout(() => this.playBeep(freq, 'triangle', 0.2), idx * 80);
+                });
+            }
+            wrong() {
+                if (!this.ctx) return;
+                this.playBeep(180, 'sawtooth', 0.3);
+                setTimeout(() => this.playBeep(130, 'sawtooth', 0.4), 150);
+            }
+            tick() {
+                this.playBeep(800, 'square', 0.03);
+            }
+            timeWarning() {
+                this.playBeep(950, 'sawtooth', 0.08);
+            }
+            finish() {
+                if (!this.ctx) return;
+                [400, 500, 600, 800, 1000, 1200].forEach((freq, idx) => {
+                    setTimeout(() => this.playBeep(freq, 'sine', 0.25), idx * 100);
+                });
+            }
+        }
+        const sfx = new SoundFX();
+    </script>
+
+    <!-- Top Navigation Bar -->
+    <header class="w-full max-w-5xl mx-auto flex justify-between items-center py-2.5 px-5 bg-white/80 backdrop-blur-md rounded-2xl border border-purple-200 shadow-sm mb-4">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl">🔥</span>
+            <div>
+                <h1 class="text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-purple-700 to-indigo-800 tracking-wider uppercase">
+                    地獄級會計考驗
+                </h1>
+                <p class="text-xs text-purple-700 font-bold tracking-wide">Hellish Accounting 6 Elements</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button id="soundToggle" onclick="toggleAudio()" class="px-3.5 py-1.5 bg-purple-100 hover:bg-purple-200 rounded-xl text-xs font-bold text-purple-900 border border-purple-300 transition flex items-center gap-2">
+                <i class="fas fa-volume-up text-purple-700" id="soundIcon"></i>
+                <span id="soundText" class="hidden sm:inline">音效開</span>
+            </button>
+            <div id="streakBadge" class="hidden items-center gap-1 bg-gradient-to-r from-orange-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-black shadow-md animate-bounce">
+                <span>🔥</span> <span id="streakCount">0</span> 連勝 Streak
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="w-full max-w-5xl mx-auto flex-1 flex flex-col justify-center items-center my-auto">
+        
+        <!-- ================= START SCREEN ================= -->
+        <div id="startScreen" class="w-full bg-white/90 border-2 border-purple-200 rounded-3xl p-6 md:p-10 text-center shadow-xl relative overflow-hidden backdrop-blur-xl">
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-red-400/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="inline-block bg-red-100 border border-red-300 text-red-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest animate-pulse">
+                💀 警告：內含毒舌酸言酸語 Warning: Heavy Sarcasm
+            </div>
+
+            <h2 class="text-3xl md:text-5xl font-black text-purple-950 mb-3 hell-glow tracking-tight leading-tight">
+                準備好進入會計地獄了嗎？
+            </h2>
+            <p class="text-base md:text-xl text-purple-800 mb-6 font-medium">
+                Are you ready to embrace your financial doom?
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-3xl mx-auto mb-8 text-left text-xs md:text-sm">
+                <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                    <span class="text-red-600 font-extrabold block mb-1">📦 資產 Assets</span>
+                    <span class="text-gray-600 font-medium text-xs">掌控的經濟效益資源</span>
+                </div>
+                <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                    <span class="text-red-600 font-extrabold block mb-1">💸 負債 Liabilities</span>
+                    <span class="text-gray-600 font-medium text-xs">未來須還的現時義務</span>
+                </div>
+                <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                    <span class="text-purple-700 font-extrabold block mb-1">👑 資本 Capital</span>
+                    <span class="text-gray-600 font-medium text-xs">業主對淨資產權益</span>
+                </div>
+                <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                    <span class="text-emerald-700 font-extrabold block mb-1">💰 收益 Revenue</span>
+                    <span class="text-gray-600 font-medium text-xs">本業或非本業效益流入</span>
+                </div>
+                <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                    <span class="text-amber-700 font-extrabold block mb-1">📉 費用 Expenses</span>
+                    <span class="text-gray-600 font-medium text-xs">營運營利產生的消耗</span>
+                </div>
+                <div class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
+                    <span class="text-blue-700 font-extrabold block mb-1">🛍️ 提用 Drawings</span>
+                    <span class="text-gray-600 font-medium text-xs">老闆私人提領公司資源</span>
+                </div>
+            </div>
+
+            <div class="bg-purple-100/70 rounded-2xl p-4 max-w-xl mx-auto mb-8 border border-purple-200 text-xs md:text-sm text-purple-900 space-y-1.5 font-bold">
+                <p>⏱️ 每題極速限時 <strong class="text-red-600 text-base">15 秒</strong>，答題越快分數越高！</p>
+                <p>🔥 包含：<strong>二手車行 vs 設計公司賣公務車</strong>、<strong>預收貨款</strong>等魔鬼陷阱題！</p>
+            </div>
+
+            <button onclick="startGame()" class="w-full max-w-md py-4 px-8 bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-xl md:text-2xl rounded-2xl shadow-lg transform transition hover:-translate-y-1 active:translate-y-0.5 border-2 border-amber-300 uppercase tracking-wider">
+                <i class="fas fa-fire mr-2"></i> 開始受虐 Enter Hell
+            </button>
+        </div>
+
+        <!-- ================= QUIZ SCREEN ================= -->
+        <div id="quizScreen" class="hidden w-full flex flex-col gap-4">
+            
+            <!-- Top HUD Bar: Score & Progress -->
+            <div class="flex justify-between items-center bg-white/90 px-5 py-3 rounded-2xl border border-purple-200 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <span class="bg-purple-100 text-purple-800 text-xs font-black px-3 py-1 rounded-full border border-purple-300" id="questionNum">
+                        Q 1 / 10
+                    </span>
+                    <div class="w-28 sm:w-48 bg-purple-100 h-3 rounded-full overflow-hidden border border-purple-200">
+                        <div id="progressBar" class="bg-gradient-to-r from-orange-500 to-red-600 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Timer Circle (15s Countdown) -->
+                <div id="timerContainer" class="flex items-center gap-2 bg-red-100 px-4 py-1.5 rounded-2xl border border-red-300">
+                    <i class="fas fa-stopwatch text-red-600 text-lg"></i>
+                    <span id="timer" class="text-2xl font-black text-red-700 w-8 text-center">15</span>
+                </div>
+
+                <!-- Score Counter -->
+                <div class="text-right">
+                    <span class="text-xs text-purple-700 block font-bold">SCORE</span>
+                    <span id="scoreText" class="text-xl md:text-2xl font-black text-purple-950">0</span>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white/95 border-2 border-purple-200 rounded-3xl p-6 md:p-8 shadow-md relative min-h-[220px] flex flex-col justify-center items-center text-center">
+                <span id="questionTag" class="text-xs font-black tracking-widest text-red-600 uppercase bg-red-100 px-3 py-1 rounded-full mb-3 border border-red-200">
+                    【陷阱題 / TRAP QUESTION】
+                </span>
+                
+                <h3 id="questionTextZH" class="text-xl md:text-3xl font-black text-purple-950 mb-2 leading-relaxed">
+                    載入中...
+                </h3>
+                <p id="questionTextEN" class="text-sm md:text-base text-purple-800 font-bold italic">
+                    Loading...
+                </p>
+            </div>
+
+            <!-- 4 Kahoot Choice Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                
+                <!-- Option 0 (Red Triangle) -->
+                <button onclick="selectAnswer(0)" class="kahoot-card btn-kahoot-red text-white p-4 md:p-5 rounded-2xl text-left flex items-center gap-4 transition group border-2 border-red-300">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-black/20 rounded-xl flex items-center justify-center text-xl md:text-2xl font-black shrink-0">
+                        ▲
+                    </div>
+                    <div class="flex-1">
+                        <div id="opt0_ZH" class="font-bold text-base md:text-lg">選項 1</div>
+                        <div id="opt0_EN" class="text-xs md:text-sm text-red-100 font-medium">Option 1</div>
+                    </div>
+                </button>
+
+                <!-- Option 1 (Blue Diamond) -->
+                <button onclick="selectAnswer(1)" class="kahoot-card btn-kahoot-blue text-white p-4 md:p-5 rounded-2xl text-left flex items-center gap-4 transition group border-2 border-blue-300">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-black/20 rounded-xl flex items-center justify-center text-xl md:text-2xl font-black shrink-0">
+                        ◆
+                    </div>
+                    <div class="flex-1">
+                        <div id="opt1_ZH" class="font-bold text-base md:text-lg">選項 2</div>
+                        <div id="opt1_EN" class="text-xs md:text-sm text-blue-100 font-medium">Option 2</div>
+                    </div>
+                </button>
+
+                <!-- Option 2 (Yellow Circle) -->
+                <button onclick="selectAnswer(2)" class="kahoot-card btn-kahoot-yellow text-white p-4 md:p-5 rounded-2xl text-left flex items-center gap-4 transition group border-2 border-yellow-300">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-black/20 rounded-xl flex items-center justify-center text-xl md:text-2xl font-black shrink-0">
+                        ●
+                    </div>
+                    <div class="flex-1">
+                        <div id="opt2_ZH" class="font-bold text-base md:text-lg">選項 3</div>
+                        <div id="opt2_EN" class="text-xs md:text-sm text-yellow-100 font-medium">Option 3</div>
+                    </div>
+                </button>
+
+                <!-- Option 3 (Green Square) -->
+                <button onclick="selectAnswer(3)" class="kahoot-card btn-kahoot-green text-white p-4 md:p-5 rounded-2xl text-left flex items-center gap-4 transition group border-2 border-green-300">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-black/20 rounded-xl flex items-center justify-center text-xl md:text-2xl font-black shrink-0">
+                        ■
+                    </div>
+                    <div class="flex-1">
+                        <div id="opt3_ZH" class="font-bold text-base md:text-lg">選項 4</div>
+                        <div id="opt3_EN" class="text-xs md:text-sm text-green-100 font-medium">Option 4</div>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- ================= EXPLANATION MODAL ================= -->
+        <div id="feedbackModal" class="hidden fixed inset-0 bg-purple-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div id="modalContent" class="w-full max-w-2xl bg-white border-2 rounded-3xl p-6 md:p-8 text-center shadow-2xl relative overflow-hidden transform transition-all scale-95 opacity-0">
+                
+                <!-- Status Badge -->
+                <div id="feedbackIcon" class="w-20 h-20 mx-auto mb-3 rounded-full flex items-center justify-center text-4xl shadow-md">
+                    🔥
+                </div>
+
+                <h3 id="feedbackTitle" class="text-2xl md:text-4xl font-black mb-2">
+                    答對了！算你運氣好
+                </h3>
+
+                <p id="savageRoast" class="text-base md:text-lg text-purple-900 font-black mb-4 italic bg-purple-50 p-3.5 rounded-xl border border-purple-200">
+                    "你竟然沒被陷阱絆倒，看來這題太簡單了！"
+                </p>
+
+                <div class="text-left bg-purple-50/80 p-4 rounded-2xl border border-purple-200 mb-6 space-y-2">
+                    <div class="flex items-center gap-2 text-xs font-black text-purple-700 uppercase">
+                        <i class="fas fa-book-open"></i> 會計觀念解析 / Accounting Concept
+                    </div>
+                    <p id="explanationZH" class="text-sm md:text-base text-purple-950 font-bold">
+                        解析內容...
+                    </p>
+                    <p id="explanationEN" class="text-xs md:text-sm text-purple-700 font-semibold italic">
+                        Explanation in English...
+                    </p>
+                </div>
+
+                <button onclick="nextQuestion()" class="w-full py-4 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white font-black text-xl rounded-2xl shadow-lg transition">
+                    下一題 Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= FINAL REPORT / LEADERBOARD ================= -->
+        <div id="resultScreen" class="hidden w-full bg-white/95 border-2 border-purple-300 rounded-3xl p-6 md:p-10 text-center shadow-xl backdrop-blur-xl">
+            <span class="text-4xl">👑</span>
+            <h2 class="text-3xl md:text-5xl font-black text-purple-950 mb-1 hell-glow">
+                地獄會計審判報告
+            </h2>
+            <p class="text-xs md:text-sm text-purple-700 font-bold mb-6 italic">Final Hellish Accounting Assessment Report</p>
+
+            <!-- Score Summary Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-xl mx-auto mb-6">
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200">
+                    <span class="text-xs text-purple-600 block font-bold">總得分 TOTAL SCORE</span>
+                    <span id="finalScore" class="text-2xl md:text-3xl font-black text-purple-950">0</span>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200">
+                    <span class="text-xs text-purple-600 block font-bold">正確率 ACCURACY</span>
+                    <span id="finalAccuracy" class="text-2xl md:text-3xl font-black text-emerald-600">0%</span>
+                </div>
+                <div class="col-span-2 sm:col-span-1 bg-purple-50 p-4 rounded-2xl border border-purple-200">
+                    <span class="text-xs text-purple-600 block font-bold">最高連勝 MAX STREAK</span>
+                    <span id="finalStreak" class="text-2xl md:text-3xl font-black text-orange-600">0</span>
+                </div>
+            </div>
+
+            <!-- Savage Rank Result Card -->
+            <div class="bg-gradient-to-br from-red-50 to-purple-50 border-2 border-red-300 p-6 rounded-3xl max-w-xl mx-auto mb-8 shadow-sm">
+                <span class="text-xs text-red-600 font-black uppercase tracking-widest block mb-1">
+                    💀 地獄級封號 SAVAGE TITLE & VERDICT
+                </span>
+                <h3 id="savageRankTitleZH" class="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-purple-700 to-indigo-800 mb-1">
+                    【稱號載入中...】
+                </h3>
+                <h4 id="savageRankTitleEN" class="text-sm md:text-base font-extrabold text-purple-800 italic mb-3">
+                    [Title Loading...]
+                </h4>
+                <p id="savageRankDescZH" class="text-sm md:text-base text-purple-950 font-bold leading-relaxed mb-2">
+                    評語載入中...
+                </p>
+                <p id="savageRankDescEN" class="text-xs md:text-sm text-purple-700 font-semibold italic leading-relaxed">
+                    Description loading...
+                </p>
+            </div>
+
+            <!-- Review Breakdown Accordion -->
+            <div class="max-w-xl mx-auto mb-8 text-left">
+                <h4 class="text-sm font-black text-purple-800 uppercase mb-3 flex items-center justify-between">
+                    <span><i class="fas fa-list-check mr-2"></i>答題審判紀錄 Review Breakdown</span>
+                    <span class="text-xs text-purple-600 font-bold">10 Questions</span>
+                </h4>
+                <div id="reviewContainer" class="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                    <!-- Dynamic review items inserted here -->
+                </div>
+            </div>
+
+            <!-- Restart Button -->
+            <button onclick="startGame()" class="w-full max-w-md py-4 bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-xl rounded-2xl shadow-lg transition transform hover:-translate-y-1 border-2 border-amber-300">
+                <i class="fas fa-redo mr-2"></i> 再受虐一次 Retake Hell Quiz
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-5xl mx-auto text-center py-4 text-xs text-purple-800 font-bold">
+        Hellish Accounting Quiz • Built with Kahoot Spirit & Pure Sarcasm • 6 Elements Edition
+    </footer>
+
+    <script>
+        // ================= 10 SAVAGE QUESTIONS DATABASE =================
+        const quizDatabase = [
+            {
+                tagZH: "【概念盲點陷阱】",
+                tagEN: "[Concept Trap]",
+                questionZH: "「二手車行」賣出一台中古車獲得 $500,000 元，這筆金額在車行的帳簿裡屬於什麼？",
+                questionEN: "A 'Used Car Dealership' sells a car for $500,000. What accounting element is this for the dealership?",
+                options: [
+                    { zh: "資產 Assets", en: "Assets" },
+                    { zh: "收益 Revenue", en: "Revenue" },
+                    { zh: "資本 Capital", en: "Capital" },
+                    { zh: "提用 Drawings", en: "Drawings" }
+                ],
+                correct: 1, // Revenue
+                explanationZH: "二手車行賣車是他們的『主要營業活動』！主要營業產生的經濟效益流入屬於【收益 Revenue】（銷貨收入）。",
+                explanationEN: "Selling cars is the core business of a car dealership! Inflow from primary operations is Revenue.",
+                roastsCorrect: [
+                    "算你懂車行的生財之道！沒把別人的商品當成自己的固定資產。",
+                    "沒錯！賣二手車是本業，入帳【收益】剛好而已。"
+                ],
+                roastsWrong: [
+                    "太慘了！車行賣車是他們的本業，你竟然以為這不是收益？你開車行準備倒閉吧！",
+                    "把本業收入記錯，會計師看了都要吐血。"
+                ]
+            },
+            {
+                tagZH: "【對比陷阱題】",
+                tagEN: "[Contrast Trap]",
+                questionZH: "「平面設計公司」把淘汰的公務二手車賣掉獲得 $200,000 元，這筆處分公務車的行為主要是在減少什麼？",
+                questionEN: "A 'Design Studio' sells its used company car. What core element is primarily being reduced?",
+                options: [
+                    { zh: "收益 Revenue", en: "Revenue" },
+                    { zh: "費用 Expenses", en: "Expenses" },
+                    { zh: "資產 Assets", en: "Assets" },
+                    { zh: "負債 Liabilities", en: "Liabilities" }
+                ],
+                correct: 2, // Assets
+                explanationZH: "設計公司的公務車本來是【資產（生財設備/運輸設備）】。賣掉車子代表設備減少，因此是【資產 Assets】的減少！",
+                explanationEN: "For a design studio, the car is an Asset (Transport Equipment). Selling it reduces company Assets.",
+                roastsCorrect: [
+                    "不錯喔！清楚分辨『車行賣車』跟『設計公司賣車』的差別！",
+                    "思路很清晰！設計公司的車是生財設備，賣掉就是減少資產。"
+                ],
+                roastsWrong: [
+                    "陷入陷阱了吧！設計公司又不賣車維生，那台車是他們的『資產』！賣掉是資產減少，不是營業收益！",
+                    "你是不是以為全天下的公司都在開二手車行？"
+                ]
+            },
+            {
+                tagZH: "【魔鬼細節題】",
+                tagEN: "[Devil's Detail]",
+                questionZH: "顧客預付了未來一整年的健身房會費 $12,000 元，健身房收錢當下該記為？",
+                questionEN: "A customer pays $12,000 in advance for a 1-year gym membership. What is this on day 1 for the gym?",
+                options: [
+                    { zh: "收益 Revenue", en: "Revenue" },
+                    { zh: "負債 Liabilities", en: "Liabilities" },
+                    { zh: "資本 Capital", en: "Capital" },
+                    { zh: "費用 Expenses", en: "Expenses" }
+                ],
+                correct: 1, // Liabilities
+                explanationZH: "錢雖然收到了，但健身房『尚未提供服務』！這叫【預收會費/預收貨款】，屬於【負債 Liabilities】（欠客戶服務）！",
+                explanationEN: "Money received before service is rendered creates Unearned Revenue, which is a Liability!",
+                roastsCorrect: [
+                    "算你狠！沒被落入袋中的現金給蒙蔽，知道沒履約前都是欠別人的【負債】！",
+                    "太內行了！預收貨款就是債，服務做完才能認收益。"
+                ],
+                roastsWrong: [
+                    "哈哈！看到錢就以為是收益？服務都還沒提供，萬一客戶明天要求退費，你拿什麼還？那是【負債】！",
+                    "會計盲點：收到錢 ≠ 賺到收益！欠服務也是負債啊大哥！"
+                ]
+            },
+            {
+                tagZH: "【老闆敗家題】",
+                tagEN: "[Owner's Privilege]",
+                questionZH: "手搖飲店老闆一時手癢，直接從收銀機拿走 $30,000 現金去買自己的名牌包送女友。這筆錢是？",
+                questionEN: "The boba shop owner takes $30,000 cash from the register for a personal gift. What is this?",
+                options: [
+                    { zh: "費用 Expenses", en: "Expenses" },
+                    { zh: "負債 Liabilities", en: "Liabilities" },
+                    { zh: "提用 Drawings", en: "Drawings" },
+                    { zh: "收益 Revenue", en: "Revenue" }
+                ],
+                correct: 2, // Drawings
+                explanationZH: "業主拿公司的錢去處理『私人用途』，屬於【提用 Drawings】（或業主抽資），會直接減少業主權益！絕對不能算店裡的費用！",
+                explanationEN: "Owner taking business funds for personal use is Drawings/Withdrawals, reducing Equity directly.",
+                roastsCorrect: [
+                    "抓包了！老闆公私不分，幸好你記在【提用】，沒讓這名牌包變成公司營運費用！",
+                    "答對了！老闆敗家要算在自己頭上【提用】，不能報公帳！"
+                ],
+                roastsWrong: [
+                    "你竟然把老闆買名牌包記成『費用』？國稅局查帳第一個把你抓進去！這是【提用】！",
+                    "老闆買名牌包跟珍奶營運有一毛錢關係嗎？這是【提用】啦！"
+                ]
+            },
+            {
+                tagZH: "【賒銷陷阱題】",
+                tagEN: "[Credit Sales Trap]",
+                questionZH: "公司賣出商品 $80,000 元，客戶拿了貨並簽字承諾「下個月付款」。這筆未收到的 $80,000 元屬於？",
+                questionEN: "Sold goods for $80,000 on credit. The client promises to pay next month. What is this unpaid amount?",
+                options: [
+                    { zh: "資產 Assets", en: "Assets" },
+                    { zh: "負債 Liabilities", en: "Liabilities" },
+                    { zh: "費用 Expenses", en: "Expenses" },
+                    { zh: "提用 Drawings", en: "Drawings" }
+                ],
+                correct: 0, // Assets (Accounts Receivable)
+                explanationZH: "這是【應收帳款 Accounts Receivable】，代表企業未來『收取現金的權利』，預期會帶來經濟效益，屬於【資產 Assets】！",
+                explanationEN: "Accounts Receivable represents the right to receive future economic benefits, hence an Asset!",
+                roastsCorrect: [
+                    "內行！白紙黑字的債權就是未來收錢的權利，妥妥的【資產】！",
+                    "沒錯！應收帳款就是資產，只希望客戶下個月不要跑路。"
+                ],
+                roastsWrong: [
+                    "沒收到錢就不算資產嗎？應收帳款可是企業珍貴的【資產】（收取現金的權利）啊！",
+                    "觀念堪憂！客戶簽字欠錢叫應收帳款，是資產不是負債！"
+                ]
+            },
+            {
+                tagZH: "【定義考驗題】",
+                tagEN: "[Definition Core]",
+                questionZH: "關於會計要素中「資產」(Assets) 的地獄真理，下列哪一項敘述最精確？",
+                questionEN: "Which of the following best describes the true accounting definition of an 'Asset'?",
+                options: [
+                    { zh: "只要放在辦公室裡的東西都是資產", en: "Anything placed inside the office" },
+                    { zh: "過去交易產生且預期帶來未來經濟效益的資源", en: "Resource from past events expected to yield future economic benefits" },
+                    { zh: "老闆口袋裡所有的私人現金與房產", en: "All personal cash and properties of the owner" },
+                    { zh: "未來預計要支付給供應商的貨款", en: "Future payments promised to suppliers" }
+                ],
+                correct: 1, // Official definition
+                explanationZH: "資產三大要件：1. 過去交易已發生；2. 企業具控制權；3. 預期帶來未來經濟效益！",
+                explanationEN: "Assets require: 1. Past transaction, 2. Control by entity, 3. Future economic benefit flow.",
+                roastsCorrect: [
+                    "背得蠻熟的嘛！看來沒少被會計老師折磨過。",
+                    "恭喜！精準選出資產教科書等級的核心定義！"
+                ],
+                roastsWrong: [
+                    "連資產定義都選錯？辦公室裡的垃圾桶也是資產嗎？要能帶來『未來經濟效益』才是！",
+                    "基礎不牢，地動山搖！請回去重讀會計學第一章！"
+                ]
+            },
+            {
+                tagZH: "【血汗加班題】",
+                tagEN: "[Overtime Expense]",
+                questionZH: "為了讓員工趕工專案，公司幫加班員工點了 $2,000 元的星巴克與珍奶並付清現金。這屬於？",
+                questionEN: "Company bought $2,000 coffee/boba for employees working overtime and paid cash. What is this?",
+                options: [
+                    { zh: "資本 Capital", en: "Capital" },
+                    { zh: "費用 Expenses", en: "Expenses" },
+                    { zh: "提用 Drawings", en: "Drawings" },
+                    { zh: "負債 Liabilities", en: "Liabilities" }
+                ],
+                correct: 1, // Expenses
+                explanationZH: "這是為了維持公司日常營運、獲取營業收益所產生的消耗（伙食費/郵電費/雜支），屬於【費用 Expenses】！",
+                explanationEN: "Consumptions incurred to support daily operations and yield revenue are Expenses.",
+                roastsCorrect: [
+                    "答對了！社畜喝掉的珍奶，全都是公司的營運【費用】！",
+                    "精確！這是為了賺錢而付出的代價，記為費用實至名歸。"
+                ],
+                roastsWrong: [
+                    "這不是老闆私用，也不是資產！這是為了賺錢給員工補充體力的【費用】啦！",
+                    "買珍奶給員工喝如果算資產，那珍奶消化完資產不就減損了？"
+                ]
+            },
+            {
+                tagZH: "【創業者注射題】",
+                tagEN: "[Founder's Injection]",
+                questionZH: "創辦人拿自己的積蓄 $1,000,000 元存入公司銀行帳戶，作為公司開張資金。這筆金額是公司的？",
+                questionEN: "Founder deposits $1,000,000 personal savings into company bank account to start business. What is this?",
+                options: [
+                    { zh: "收益 Revenue", en: "Revenue" },
+                    { zh: "資本 Capital", en: "Capital" },
+                    { zh: "負債 Liabilities", en: "Liabilities" },
+                    { zh: "費用 Expenses", en: "Expenses" }
+                ],
+                correct: 1, // Capital
+                explanationZH: "業主投入企業的原始資金或追加投資，稱為【資本 Capital】（業主權益），代表業主對企業淨資產的權利！",
+                explanationEN: "Funds invested by owners to start or expand business represent Capital (Owner's Equity).",
+                roastsCorrect: [
+                    "算你識貨！這是金主爸爸給的【資本】，不是公司自己賺的收益！",
+                    "沒錯！業主投資入股，這就是【資本 Capital】。"
+                ],
+                roastsWrong: [
+                    "以為這是收益？公司又還沒開始賣東西，哪來的收益？這是老闆投進來的【資本】！",
+                    "業主給錢叫資本，顧客給錢叫收益，這都分不清嗎？"
+                ]
+            },
+            {
+                tagZH: "【應付帳款題】",
+                tagEN: "[Accounts Payable]",
+                questionZH: "餐廳向農夫進貨 $50,000 元蔬菜，簽合約約定「30天後付清」。這筆尚未支付的欠款屬於？",
+                questionEN: "Restaurant buys $50,000 vegetables on 30-day credit. What is this unpaid obligation?",
+                options: [
+                    { zh: "負債 Liabilities", en: "Liabilities" },
+                    { zh: "資產 Assets", en: "Assets" },
+                    { zh: "提用 Drawings", en: "Drawings" },
+                    { zh: "收益 Revenue", en: "Revenue" }
+                ],
+                correct: 0, // Liabilities
+                explanationZH: "這是【應付帳款 Accounts Payable】，屬於企業因過去交易而承擔的現時義務，未來預期會流出現金，是【負債 Liabilities】！",
+                explanationEN: "Accounts Payable represents a present obligation from past events expected to cause cash outflow (Liability).",
+                roastsCorrect: [
+                    "對啦！出來混總是要還的，賒購欠錢就是【負債】！",
+                    "答對了！欠農夫的菜錢，是扎扎實實的負債。"
+                ],
+                roastsWrong: [
+                    "欠別人的錢不是負債是什麼？難道是你的資產嗎？想得美啊！",
+                    "應付帳款就是負債！不要以為還沒給錢就可以當作沒這回事！"
+                ]
+            },
+            {
+                tagZH: "【終極等式題】",
+                tagEN: "[Ultimate Equation]",
+                questionZH: "會計學中最堅不可摧的「恆等式」(Accounting Equation) 是什麼？",
+                questionEN: "Which is the fundamental and unbreakable Accounting Equation?",
+                options: [
+                    { zh: "資產 = 負債 + 業主權益 (資本)", en: "Assets = Liabilities + Owner's Equity" },
+                    { zh: "資產 + 收益 = 負債 + 費用", en: "Assets + Revenue = Liabilities + Expenses" },
+                    { zh: "資本 = 資產 + 負債", en: "Capital = Assets + Liabilities" },
+                    { zh: "收益 = 費用 + 提用", en: "Revenue = Expenses + Drawings" }
+                ],
+                correct: 0, // Assets = Liabilities + Equity
+                explanationZH: "這是會計學的基石：【資產 = 負債 + 業主權益】！左邊是資金去向（擁有什麼），右邊是資金來源（向誰借/誰投資）。",
+                explanationEN: "The fundamental accounting equation: Assets = Liabilities + Equity. The foundation of modern double-entry bookkeeping!",
+                roastsCorrect: [
+                    "恭喜你通關！會計學第一鐵律，死都要記住！",
+                    "完美的句點！資產 = 負債 + 權益，宇宙不滅的等式！"
+                ],
+                roastsWrong: [
+                    "終極題竟然掛掉？會計等式左邊等於右邊！借貸平衡懂不懂啊？",
+                    "連『資產 = 負債 + 權益』都選錯，你的會計老師現在在你背後，他非常火！"
+                ]
+            }
+        ];
+
+        // ================= GAME STATE VARIABLES =================
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let timer = 15; // Set to 15 seconds countdown
+        let timerInterval = null;
+        let audioEnabled = true;
+        let userAnswersHistory = [];
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+            if (audioEnabled) {
+                soundIcon.className = "fas fa-volume-up text-purple-700";
+                soundText.innerText = "音效開";
+            } else {
+                soundIcon.className = "fas fa-volume-mute text-gray-400";
+                soundText.innerText = "靜音";
+            }
+        }
+
+        function playSound(type, ...args) {
+            if (!audioEnabled) return;
+            sfx.init();
+            if (type === 'tick') sfx.tick();
+            if (type === 'correct') sfx.correct();
+            if (type === 'wrong') sfx.wrong();
+            if (type === 'timeWarning') sfx.timeWarning();
+            if (type === 'finish') sfx.finish();
+        }
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            streak = 0;
+            maxStreak = 0;
+            userAnswersHistory = [];
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+            const q = quizDatabase[currentQuestionIndex];
+
+            // Update UI Counters
+            document.getElementById('questionNum').innerText = `Q ${currentQuestionIndex + 1} / ${quizDatabase.length}`;
+            document.getElementById('scoreText').innerText = score;
+            document.getElementById('progressBar').style.width = `${((currentQuestionIndex) / quizDatabase.length) * 100}%`;
+
+            // Update Streak UI
+            const streakBadge = document.getElementById('streakBadge');
+            if (streak > 1) {
+                streakBadge.classList.remove('hidden');
+                streakBadge.classList.add('flex');
+                document.getElementById('streakCount').innerText = streak;
+            } else {
+                streakBadge.classList.add('hidden');
+                streakBadge.classList.remove('flex');
+            }
+
+            // Populate Text
+            document.getElementById('questionTag').innerText = `${q.tagZH} ${q.tagEN}`;
+            document.getElementById('questionTextZH').innerText = q.questionZH;
+            document.getElementById('questionTextEN').innerText = q.questionEN;
+
+            // Populate Options
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`opt${i}_ZH`).innerText = q.options[i].zh;
+                document.getElementById(`opt${i}_EN`).innerText = q.options[i].en;
+            }
+
+            // Reset Timer to 15 seconds
+            timer = 15;
+            document.getElementById('timer').innerText = timer;
+            const timerContainer = document.getElementById('timerContainer');
+            timerContainer.className = "flex items-center gap-2 bg-red-100 px-4 py-1.5 rounded-2xl border border-red-300";
+
+            timerInterval = setInterval(() => {
+                timer--;
+                document.getElementById('timer').innerText = timer;
+
+                if (timer <= 4 && timer > 0) {
+                    timerContainer.className = "flex items-center gap-2 bg-red-500 text-white px-4 py-1.5 rounded-2xl border border-red-600 animate-pulse-fast";
+                    playSound('timeWarning');
+                } else if (timer > 4) {
+                    playSound('tick');
+                }
+
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    selectAnswer(-1); // Time Out
+                }
+            }, 1000);
+        }
+
+        function selectAnswer(selectedIndex) {
+            clearInterval(timerInterval);
+            const q = quizDatabase[currentQuestionIndex];
+            const isCorrect = (selectedIndex === q.correct);
+
+            let pointsGained = 0;
+            let roastMessage = "";
+
+            if (isCorrect) {
+                // Calculate Speed Bonus based on 15s timer
+                const speedBonus = timer * 66;
+                const streakBonus = streak * 100;
+                pointsGained = 1000 + speedBonus + streakBonus;
+                score += pointsGained;
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+
+                playSound('correct');
+                roastMessage = q.roastsCorrect[Math.floor(Math.random() * q.roastsCorrect.length)];
+            } else {
+                streak = 0;
+                playSound('wrong');
+                if (selectedIndex === -1) {
+                    roastMessage = "⏰ 15秒時間到！你是在猶豫要怎麼做假帳嗎？猶豫就會敗北！";
+                } else {
+                    roastMessage = q.roastsWrong[Math.floor(Math.random() * q.roastsWrong.length)];
+                }
+            }
+
+            // Save History
+            userAnswersHistory.push({
+                questionIndex: currentQuestionIndex,
+                selectedIndex: selectedIndex,
+                isCorrect: isCorrect,
+                pointsGained: pointsGained
+            });
+
+            showFeedbackModal(isCorrect, roastMessage, q);
+        }
+
+        function showFeedbackModal(isCorrect, roastText, qObj) {
+            const modal = document.getElementById('feedbackModal');
+            const content = document.getElementById('modalContent');
+            const icon = document.getElementById('feedbackIcon');
+            const title = document.getElementById('feedbackTitle');
+            const roast = document.getElementById('savageRoast');
+            const expZH = document.getElementById('explanationZH');
+            const expEN = document.getElementById('explanationEN');
+
+            if (isCorrect) {
+                content.className = "w-full max-w-2xl bg-white border-2 border-emerald-400 rounded-3xl p-6 md:p-8 text-center shadow-2xl relative overflow-hidden transform transition-all scale-100 opacity-100";
+                icon.className = "w-20 h-20 mx-auto mb-3 rounded-full flex items-center justify-center text-4xl shadow-md bg-emerald-100 text-emerald-600 border border-emerald-300";
+                icon.innerHTML = '<i class="fas fa-check"></i>';
+                title.className = "text-2xl md:text-4xl font-black mb-2 text-emerald-600";
+                title.innerText = "答對了！奇蹟發生了！";
+            } else {
+                content.className = "w-full max-w-2xl bg-white border-2 border-red-400 rounded-3xl p-6 md:p-8 text-center shadow-2xl relative overflow-hidden transform transition-all scale-100 opacity-100 animate-shake";
+                icon.className = "w-20 h-20 mx-auto mb-3 rounded-full flex items-center justify-center text-4xl shadow-md bg-red-100 text-red-600 border border-red-300";
+                icon.innerHTML = '<i class="fas fa-times"></i>';
+                title.className = "text-2xl md:text-4xl font-black mb-2 text-red-600";
+                title.innerText = "慘敗！地獄審判降臨！";
+            }
+
+            roast.innerText = `"${roastText}"`;
+            expZH.innerHTML = `<strong class="text-purple-900">正確解答：${qObj.options[qObj.correct].zh}</strong><br>${qObj.explanationZH}`;
+            expEN.innerText = qObj.explanationEN;
+
+            modal.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            document.getElementById('feedbackModal').classList.add('hidden');
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizDatabase.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+
+            playSound('finish');
+
+            const totalQuestions = quizDatabase.length;
+            const correctCount = userAnswersHistory.filter(h => h.isCorrect).length;
+            const accuracy = Math.round((correctCount / totalQuestions) * 100);
+
+            document.getElementById('finalScore').innerText = score;
+            document.getElementById('finalAccuracy').innerText = `${accuracy}%`;
+            document.getElementById('finalStreak').innerText = maxStreak;
+
+            // Generate Savage Title & Rating (Bilingual)
+            const titleZH = document.getElementById('savageRankTitleZH');
+            const titleEN = document.getElementById('savageRankTitleEN');
+            const descZH = document.getElementById('savageRankDescZH');
+            const descEN = document.getElementById('savageRankDescEN');
+
+            if (accuracy === 100) {
+                titleZH.innerText = "👑 【地獄會計神鬼教父】";
+                titleEN.innerText = "The Godfather of Accounting Darkness";
+                descZH.innerText = "簡直不敢相信！你竟然完全沒有被毒舌陷阱題絆倒！你的會計觀念無懈可擊，國稅局跟查帳會計師看到你都要恭敬敬禮！你已經超越地獄了！";
+                descEN.innerText = "Unbelievable! You avoided every single savage trap. Your accounting logic is flawless; auditors and tax agents bow before your supreme financial wisdom!";
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            } else if (accuracy >= 80) {
+                titleZH.innerText = "🔥 【做帳假仙大師】";
+                titleEN.innerText = "Master of Creative Bookkeeping";
+                descZH.innerText = "表現相當出色！大部分的魔鬼陷阱你都輕鬆避開了。雖然偶爾踩到小碎石，但離成為做帳高手只有一步之遙，國稅局暫時查不到你頭上。";
+                descEN.innerText = "Impressive performance! You dodged almost all devilish traps. You are just one step away from financial deity—the tax office won't catch you today.";
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+            } else if (accuracy >= 50) {
+                titleZH.innerText = "💀 【隨時破產邊緣人】";
+                titleEN.innerText = "The Bankruptcy Teeterer";
+                descZH.innerText = "勉強及格！但你對於『車行賣車 vs 設計公司賣車』跟『預收貨款』的觀念依然半生不熟。把你派去當財務主管，公司大概三年內會收到法院傳票。";
+                descEN.innerText = "Barely survived! You still mix up dealership inventory with firm company cars and unearned revenue. If hired as CFO, the company gets subpoenaed within 3 years.";
+            } else if (accuracy >= 20) {
+                titleZH.innerText = "💩 【做假帳初學者】";
+                titleEN.innerText = "Amateur Fraud Apprentice";
+                descZH.innerText = "慘不忍睹！你把老闆買名牌包當費用、把預收貨款當收益... 你的會計老師現在正在背後非常火！建議你從『會計學第一章』重新做人！";
+                descEN.innerText = "Disastrous! You recorded the boss's designer bag as business expense and unearned cash as immediate revenue. Go back to Accounting Chapter 1!";
+            } else {
+                titleZH.innerText = "☠️ 【破產預備軍 / 財務黑洞】";
+                titleEN.innerText = "Walking Financial Black Hole";
+                descZH.innerText = "零分邊緣！你簡直是企業財務的毀滅者！這份資產負債表交出去，公司股票明天直接跌停下市！請遠離任何收銀機與帳簿！";
+                descEN.innerText = "Near zero! You are a walking weapon of financial destruction. Submitting your balance sheet would delist company stocks tomorrow!";
+            }
+
+            // Populate Review List (Bilingual)
+            const reviewContainer = document.getElementById('reviewContainer');
+            reviewContainer.innerHTML = "";
+
+            userAnswersHistory.forEach((h, idx) => {
+                const q = quizDatabase[h.questionIndex];
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-2xl border text-xs md:text-sm shadow-sm ${
+                    h.isCorrect 
+                    ? 'bg-emerald-50/90 border-emerald-300 text-emerald-950 font-bold' 
+                    : 'bg-red-50/90 border-red-300 text-red-950 font-bold'
+                }`;
+
+                const userTextZH = h.selectedIndex === -1 ? '逾時未答 Time Out' : q.options[h.selectedIndex].zh;
+                const userTextEN = h.selectedIndex === -1 ? 'Time Out' : q.options[h.selectedIndex].en;
+
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <div class="flex items-center gap-1.5 font-black text-purple-900">
+                            <span>${h.isCorrect ? '✅ Correct' : '❌ Wrong'}</span>
+                            <span>Q${idx + 1}.</span>
+                        </div>
+                        <span class="font-mono font-black shrink-0 px-2 py-0.5 rounded-md ${h.isCorrect ? 'bg-emerald-200 text-emerald-900' : 'bg-red-200 text-red-900'} text-xs">
+                            +${h.pointsGained} pts
+                        </span>
+                    </div>
+                    <div class="text-gray-900 font-extrabold mb-1">
+                        ${q.questionZH}
+                    </div>
+                    <div class="text-xs text-purple-800 font-semibold italic mb-2">
+                        ${q.questionEN}
+                    </div>
+                    <div class="bg-white/80 p-2 rounded-xl border border-purple-100 text-xs space-y-1">
+                        <div>
+                            <span class="text-gray-500 font-bold">你的回答 Your Answer:</span> 
+                            <span class="${h.isCorrect ? 'text-emerald-700' : 'text-red-600'} font-black">${userTextZH} (${userTextEN})</span>
+                        </div>
+                        ${!h.isCorrect ? `
+                        <div>
+                            <span class="text-gray-500 font-bold">正確解答 Correct Answer:</span> 
+                            <span class="text-emerald-700 font-black">${q.options[q.correct].zh} (${q.options[q.correct].en})</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                reviewContainer.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
